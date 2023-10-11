@@ -1,7 +1,7 @@
-FROM php:8.1-fpm
+FROM php:8.2-fpm
 
 # set your user name, ex: user=carlos
-ARG user=yourusername
+ARG user=elsblog
 ARG uid=1000
 
 # Install system dependencies
@@ -28,10 +28,6 @@ RUN useradd -G www-data,root -u $uid -d /home/$user $user
 RUN mkdir -p /home/$user/.composer && \
     chown -R $user:$user /home/$user
 
-# Install redis
-RUN pecl install -o -f redis \
-    &&  rm -rf /tmp/pear \
-    &&  docker-php-ext-enable redis
 
 # Set working directory
 WORKDIR /var/www
