@@ -7,10 +7,9 @@ use Illuminate\Support\Facades\Route;
 
 // Get post
 Route::get('/post/{slug}', [PostController::class, 'show']);
-// Create a post
-// Route::post('/post/create', [PostController::class, 'store']);
 
 
-Route::post('/post/create', [PostController::class, 'store']);
-// Route::middleware(['auth:sanctum'])->group(function () {
-// });
+Route::middleware(['auth', 'is_admin'])->group(function () {
+    // Create a post
+    Route::post('/post/create', [PostController::class, 'store']);
+});
