@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
-use App\Models\User;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -44,14 +42,14 @@ class PostController extends Controller
     {
         $user = auth()->user(); // Auth factory
         $this->validate($request, [
-            'title' => 'required|max:180',
+            'title' => 'required|unique:posts|max:180',
             'description' => 'required|max:255',
             'content' => 'required'
         ]);
 
         $post = Post::create([
             'title'       => $request->title,
-            'slug'        => 'slug-test',
+            'slug'        => Str::slug($request->input('title'), "-"),
             'description' => $request->description,
             'content'     => $request->content,
             'user_id'     => $user->id
