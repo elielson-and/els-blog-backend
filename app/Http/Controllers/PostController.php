@@ -3,10 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
+
+
+
     /**
      * Display a listing of the resource.
      *
@@ -35,7 +42,22 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = auth()->user(); // Auth factory
+        $this->validate($request, [
+            'title' => 'required|max:180',
+            'description' => 'required|max:255',
+            'content' => 'required'
+        ]);
+
+        $post = Post::create([
+            'title'       => $request->title,
+            'slug'        => 'slug-test',
+            'description' => $request->description,
+            'content'     => $request->content,
+            'user_id'     => $user->id
+        ]);
+
+        return response()->json(['created' => $post], Response::HTTP_CREATED);
     }
 
     /**

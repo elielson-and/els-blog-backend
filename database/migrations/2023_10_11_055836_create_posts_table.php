@@ -15,8 +15,12 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
+            $table->string('banner_img')->default('./source.jpg');
             $table->string('title');
+            $table->string('slug');
             $table->string('content');
+            $table->integer('views')->default(0);
+            $table->integer('likes')->default(0);
             $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });
