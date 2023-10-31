@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 
 
 // Get post
+Route::get('/post/all', [PostController::class, 'index']);
 Route::get('/post/{post}', [PostController::class, 'show']);
 
 
