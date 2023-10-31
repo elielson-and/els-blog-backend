@@ -12,6 +12,7 @@ class Post extends Model
     protected $fillable = [
         'banner_img',
         'title',
+        'description',
         'slug',
         'content',
         'views',

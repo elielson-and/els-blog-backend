@@ -22,15 +22,7 @@ class PostController extends Controller
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -66,18 +58,8 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Post $post)
-    {
-        //
+        $post = Post::where('id', $post->id)->first();
+        return response()->json($post, Response::HTTP_OK);
     }
 
     /**
@@ -87,9 +69,22 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post)
+    public function update(Request $request, Post $id)
     {
-        //
+        $this->validate($request, [
+            'title' => 'unique:posts|max:180',
+            'description' => 'max:255',
+            'content' => 'max:255',
+        ]);
+
+        $post = Post::where('id', $id)
+            ->update([
+                'title' => $request->title,
+                'description' => $request->description,
+                'content' => $request->content
+            ]);
+
+        return response()->json($post, Response::HTTP_OK);
     }
 
     /**
@@ -100,6 +95,7 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        $post = Post::where('id', $post->id)->delete();
+        return response()->json($post, Response::HTTP_OK);
     }
 }

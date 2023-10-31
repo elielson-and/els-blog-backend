@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('banner_img')->default('./source.jpg');
             $table->string('title');
+            $table->string('description');
             $table->string('slug');
             $table->string('content');
             $table->integer('views')->default(0);
