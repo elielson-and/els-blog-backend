@@ -14,5 +14,5 @@ Route::get('/post/{post}', [PostController::class, 'show']);
 Route::middleware(['auth', 'is_admin'])->group(function () {
     // Create a post
     Route::post('/post/create', [PostController::class, 'store']);
-    Route::patch('/post/update/{id}', [PostController::class, 'update']);
+    Route::patch('/post/update/{slug}', [PostController::class, 'update']);
 });

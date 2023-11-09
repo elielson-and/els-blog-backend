@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 class PostController extends Controller
@@ -76,20 +77,23 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $id)
+    public function update(Request $request, $slug)
     {
-        $this->validate($request, [
-            'title' => 'unique:posts|max:180',
-            'description' => 'max:255',
-            'content' => 'max:255',
+        $post = Post::where('slug', $slug)->firstOrFail();
+
+        $validator = Validator::make($request->all(), [
+            'title' => 'sometimes|required|unique:posts,title,' . $post->id . '|max:180',
+            'description' => 'sometimes|required|max:255',
+            'content' => 'sometimes|required|max:255',
         ]);
 
-        $post = Post::where('id', $id)
-            ->update([
-                'title' => $request->title,
-                'description' => $request->description,
-                'content' => $request->content
-            ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        $post->fill($request->only(['title', 'description', 'content']));
+
+        $post->save();
 
         return response()->json($post, Response::HTTP_OK);
     }
