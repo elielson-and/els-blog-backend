@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->string('banner_img')->default('./source.jpg');
+            $table->string('banner_img')->default('../src/assets/images/bg_default.jpg');
             $table->string('title');
             $table->string('description');
             $table->string('slug');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Str;
@@ -57,10 +58,15 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function show(Post $post)
+    public function show($slug)
     {
-        $post = Post::where('id', $post->id)->first();
-        return response()->json($post, Response::HTTP_OK);
+        $postData = Post::where('slug', $slug)->first();
+        $author = User::where('id', $postData->user_id)->first()->name;
+        $postData->author = $author;
+        unset($postData->user_id);
+        unset($postData->created_at);
+        unset($postData->id);
+        return response()->json($postData, Response::HTTP_OK);
     }
 
     /**
