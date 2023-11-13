@@ -84,7 +84,7 @@ class PostController extends Controller
         $validator = Validator::make($request->all(), [
             'title' => 'sometimes|required|unique:posts,title,' . $post->id . '|max:180',
             'description' => 'sometimes|required|max:255',
-            'content' => 'sometimes|required|max:255',
+            'content' => 'sometimes|required',
         ]);
 
         if ($validator->fails()) {
@@ -104,9 +104,10 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Post $post)
+    public function destroy($slug)
     {
-        $post = Post::where('id', $post->id)->delete();
-        return response()->json($post, Response::HTTP_OK);
+        $post = Post::where('slug', $slug)->firstOrFail();
+        $post->delete();
+        return response()->json(Response::HTTP_NO_CONTENT);
     }
 }
