@@ -21,7 +21,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $post = Post::all();
+        $post = Post::orderBy('id', 'desc')->get();
         return response()->json($post, Response::HTTP_OK);
     }
 
