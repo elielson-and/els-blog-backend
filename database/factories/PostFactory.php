@@ -21,10 +21,10 @@ class PostFactory extends Factory
         $title = $this->faker->sentence(5);
         return [
             "title" => $title,
-            "slug" => Str::slug($title, '-'), // Gera o slug com base no título
+            "slug" => Str::slug($title, '-'),
             "description" => $this->faker->text(255),
-            "content" => "Content", //$this->faker->paragraphs(3, true), // Gera um conteúdo
-            "user_id" => 2, //User::factory(), // Usa uma factory para o User
+            "content" => $this->faker->paragraphs(20, true),
+            "user_id" => 2, //User::factory(),
             "created_at" => $this->faker->dateTime,
             "updated_at" => $this->faker->dateTime,
         ];
